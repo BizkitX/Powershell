@@ -1,0 +1,1 @@
+﻿Get-ADUser -filter {enabled -eq $true -and extensionattribute8 -eq "ppl"} -Properties * | Select Name, SamAccountName, Description, Office, telephonenumber, EmailAddress | Export-Csv c:\testing.csv

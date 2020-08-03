@@ -1,0 +1,1 @@
+﻿Get-ADComputer -Filter {Enabled -eq $false -and Name -like "US*"} -SearchBase "OU=Disabled Computers,OU=Dormant Accounts,OU=Mott MacDonald Group,DC=mottmac,DC=group,DC=int" -Properties Name, OperatingSystem, Description | Select-Object Name, OperatingSystem, Description | Sort-Object Name | Out-GridView

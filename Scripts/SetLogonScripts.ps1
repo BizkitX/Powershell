@@ -1,0 +1,1 @@
+﻿Get-ADUser -Filter * -SearchBase "OU=HAT,OU=US,DC=HMMG,DC=CC" | set -Scriptpath SPL.bat

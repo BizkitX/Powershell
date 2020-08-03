@@ -1,0 +1,1 @@
+Invoke-Command -ComputerName us001625aa -ScriptBlock (stop-service ccmexec ; Get-WmiObject -query "Select * From __Namespace Where Name='CCM'" -Namespace "root" | Remove-WmiObject ; stop-service wuauserv ; del C:\windows\SoftwareDistribution\DataStore\DataStore.edb ; c:\windows\ccm\ccmrepair.exe ; start-service wuauserv ; start-service ccmexec)
