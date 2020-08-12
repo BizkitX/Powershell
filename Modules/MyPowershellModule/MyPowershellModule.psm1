@@ -117,20 +117,26 @@ Get-WmiObject -Class cim_videocontroller -ComputerName $comp | Select-Object nam
 
 function Get-LoggedOnUser
 {
-$ErrorActionPreference = "SilentlyContinue"
-$comp = read-host "Please enter computer name"
-$userID = (Get-WmiObject -Class win32_computersystem -ComputerName $comp).username.Split("\")[1]
-
-
-
-if (Test-Connection $comp -quiet -Count 1)
-{
- Write-Host -ForegroundColor Green "Computer $comp is online"
- Write-Host -ForegroundColor Cyan "Loading User Information..."
- Get-ADUser $userID -Properties Name,Description,Office,TelephoneNumber | Select-Object Name, Description, Office, TelephoneNumber | Format-List
- }
- Else{
- Write-Host -ForegroundColor Red "Computer $comp is offline"}
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]
+        $ComputerName
+        )
+        
+        $ErrorActionPreference = "SilentlyContinue"
+        
+        $userID = (Get-WmiObject -Class win32_computersystem -ComputerName $ComputerName).username.Split("\")[1]
+        
+        
+        
+        if (Test-Connection $ComputerName -quiet -Count 1)
+        {
+         Write-Host -ForegroundColor Green "Computer $ComputerName is online"
+         Write-Host -ForegroundColor Cyan "Loading User Information..."
+         Get-ADUser $userID -Properties Name,Description,Office,TelephoneNumber | Select-Object Name, Description, Office, TelephoneNumber | Format-List
+         }
+         Else{
+         Write-Host -ForegroundColor Red "Computer $ComputerName is offline"}
  }
  
  
@@ -237,11 +243,18 @@ Disable-ADAccount -Verbose -Confirm
 }
 Function Get-DriveSpace
 {
-$comp = Read-Host "Enter Computername"
-Get-WmiObject –Class Win32_Volume -ComputerName $comp -Credential mottmac\adminwal63291 | Format-Table –auto DriveLetter,`
-                  Label,`
-                  @{Label=”Free(GB)”;Expression={“{0:N0}” –F ($_.FreeSpace/1GB)}},`
-                  @{Label=”%Free”;Expression={“{0:P0}” –F ($_.FreeSpace/$_.Capacity)}}
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]
+        $ComputerName
+        )
+        
+    $Credentials = Get-Credential
+    
+    Get-WmiObject –Class Win32_Volume -ComputerName $ComputerName -Credential $Credentials | Format-Table –auto DriveLetter,`
+                      Label,`
+                      @{Label=”Free(GB)”;Expression={“{0:N0}” –F ($_.FreeSpace/1GB)}},`
+                      @{Label=”%Free”;Expression={“{0:P0}” –F ($_.FreeSpace/$_.Capacity)}}
 }
 function Get-DellWarrantyStatus
 {
