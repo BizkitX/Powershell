@@ -1,7 +1,8 @@
 Param(
-[string]$ComputerName
+   [Parameter(Mandatory)]
+   [string]$ComputerName
 )
- 
+ Write-Host "Loading..."
 $Connection = Test-Connection $ComputerName -Count 1 -Quiet
  
 if ($Connection -eq "True"){
