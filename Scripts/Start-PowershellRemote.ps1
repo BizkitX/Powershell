@@ -1,5 +1,9 @@
-﻿$creds = Get-Credential -Message "Please enter your ADMINISTRATOR credentials."
-$ComputerName = Read-Host "Enter Computer Name"
+﻿param(
+    [parameter(Mandatory)]
+    [string]$ComputerName
+)
+
+$creds = Get-Credential -Message "Please enter your ADMINISTRATOR credentials."
 $Connection = Test-Connection $ComputerName -Count 1 -Quiet
 
 If ($Connection -eq "True")
