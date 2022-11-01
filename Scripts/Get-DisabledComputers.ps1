@@ -1,0 +1,1 @@
+Get-ADComputer -Filter {Enabled -eq $false } -Properties Name, LastLogonDate | Select-Object Name, LastLogonDate | Sort-Object Name
