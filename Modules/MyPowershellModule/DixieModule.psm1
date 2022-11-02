@@ -30,10 +30,10 @@ Format-List
 $PasswordExpired = (Get-ADUser -Filter "SamAccountName -eq '$Name'" -Properties "PasswordExpired").PasswordExpired
 If ($PasswordExpired -eq "True")
 { 
-    Write-Output "Password is Expired!"
+    Write-Host "Password is Expired!" -ForegroundColor Red
 }
 else {
-    Write-Output "Password is still good."
+    Write-Host "Password is still good." -ForegroundColor Green
 }
 }
 
