@@ -4,30 +4,31 @@
 #                             #
 ###############################
 
+#Lists all currently disabled users in Active Directory and their last logon date/time.
 function Get-DisabledUsers {
     
     Get-ADUser -Filter {Enabled -eq $false} -Properties Name, LastLogonDate | Select-Object Name, LastLogonDate | Sort-Object Name
     
 }
-
+#Lists all currently disabled computers in Active Directory and their last logon date/time.
 function Get-DisabledComputers {
     
     Get-ADComputer -Filter {Enabled -eq $false } -Properties Name, LastLogonDate | Select-Object Name, LastLogonDate | Sort-Object Name
     
 }
-
+#Will give current AD password status.
 function Get-PasswordExpiryDate {
     param(
     [Parameter(Mandatory = $True)]
     [string]
-    $Name
+    $SamAccountName
 )
 
-Get-ADUser -Filter "SamAccountName -eq '$Name'" -Properties "DisplayName", "PasswordExpired", "PasswordLastSet", "msDS-UserPasswordExpiryTimeComputed" |
+Get-ADUser -Filter "SamAccountName -eq '$SamAccountName'" -Properties "DisplayName", "PasswordExpired", "PasswordLastSet", "msDS-UserPasswordExpiryTimeComputed" |
 Select-Object -Property Displayname, PasswordLastSet, @{Name="ExpiryDate";Expression={[datetime]::FromFileTime($_."msDS-UserPasswordExpiryTimeComputed")}} |
 Format-List
 
-$PasswordExpired = (Get-ADUser -Filter "SamAccountName -eq '$Name'" -Properties "PasswordExpired").PasswordExpired
+$PasswordExpired = (Get-ADUser -Filter "SamAccountName -eq '$SamAccountName'" -Properties "PasswordExpired").PasswordExpired
 If ($PasswordExpired -eq "True")
 { 
     Write-Host "Password is Expired!" -ForegroundColor Red

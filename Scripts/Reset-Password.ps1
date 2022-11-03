@@ -1,5 +1,5 @@
 ﻿$user = Read-Host "Enter UserID"
-$password = Read-Host "Enter new password"
+$password = Read-Host -AsSecureString "Enter new password"
 
 Write-Host -ForegroundColor Yellow -BackgroundColor Black "Resetting user password..."
 
