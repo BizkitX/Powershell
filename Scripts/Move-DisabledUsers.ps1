@@ -11,11 +11,11 @@ Import-Module ActiveDirectory
 #Searches for disabled USERS and moves them to the correct OU
 Search-ADAccount -AccountDisabled -UsersOnly | 
 Where-Object {$_.DistinguishedName -ne "$UsersOU" -and $_.Name -ne "Administrator"} |
-Move-ADObject -TargetPath "$UsersOU"
+Move-ADObject -TargetPath "$UsersOU" -Verbose
 
 #Searches for disabled COMPUTERS and moves them to the correct OU
 Search-ADAccount -AccountDisabled -ComputersOnly | 
 Where-Object {$_.DistinguishedName -ne "$ComputersOU"} |
-Move-ADObject -TargetPath "$ComputersOU"
+Move-ADObject -TargetPath "$ComputersOU" -Verbose
 
 Stop-Transcript
