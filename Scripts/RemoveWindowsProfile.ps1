@@ -3,5 +3,5 @@
 
 Get-CimInstance -ComputerName l-dcentraltest2 -Class Win32_UserProfile |
 Where-Object { $_.LocalPath.split('\')[-1] -eq 'general.services' } |
-Remove-CimInstance
+Remove-CimInstance -Verbose
 
