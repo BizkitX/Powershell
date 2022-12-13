@@ -62,9 +62,7 @@ Write-Host -ForegroundColor Red "The computer is unreachable"
 }
 
 # Will remove the win32 user profile from the specified computer. 
-# Be sure to change computername and username.
-
-function RemoveWindowsProfile {
+function Remove-WindowsProfile {
     param(
       [parameter(Mandatory)] 
         [string[]] 
@@ -81,3 +79,47 @@ function RemoveWindowsProfile {
     
     }
 
+    #Enables Windows Remote Management on a remote machine.
+function Enable_WinRM {
+    
+    param(
+        [parameter(Mandatory)]
+        [string]$ComputerName
+    )
+    
+    $Connection = Test-Connection $ComputerName -Count 1 -Quiet
+    
+    If ($Connection -eq "True")
+    {
+    PsExec.exe \\$ComputerName -s winrm.cmd quickconfig -q
+    }
+    
+    Else
+    {
+    Write-Host -ForegroundColor Red "The computer is unreachable"
+    }
+
+}
+
+#Starts a PowerShell Remote Session.
+function Start-PSRemote {
+    param(
+    [parameter(Mandatory)]
+    [string]$ComputerName
+)
+
+$creds = Get-Credential -Message "Please enter your ADMIN credentials."
+$Connection = Test-Connection $ComputerName -Count 1 -Quiet
+
+If ($Connection -eq "True")
+{
+PsExec.exe \\$ComputerName -s winrm.cmd quickconfig -q
+Enter-PSSession -ComputerName $ComputerName -Credential $creds
+}
+
+Else
+{
+Write-Host -ForegroundColor Red "The computer is unreachable"
+}
+    
+}
