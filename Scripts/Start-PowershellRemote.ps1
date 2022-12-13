@@ -3,7 +3,7 @@
     [string]$ComputerName
 )
 
-$creds = Get-Credential -Message "Please enter your ADMINISTRATOR credentials."
+$creds = Get-Credential -Message "Please enter your ADMIN credentials."
 $Connection = Test-Connection $ComputerName -Count 1 -Quiet
 
 If ($Connection -eq "True")
