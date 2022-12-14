@@ -3,14 +3,14 @@ param(
     [string]$ComputerName
 )
 
-$Connection = Test-Connection $ComputerName -Count 1 -Quiet
+$Connection = Test-Connection $ComputerName -Count 1 -ErrorAction SilentlyContinue
 
-If ($Connection -eq "True")
+If ($Connection -eq "$true")
 {
 PsExec.exe \\$ComputerName -s winrm.cmd quickconfig -q
 }
 
 Else
 {
-Write-Host -ForegroundColor Red "The computer is unreachable"
+Write-Host -NoNewline -ForegroundColor Red "The computer is unreachable"
 }
