@@ -123,3 +123,15 @@ Write-Host -NoNewline -ForegroundColor Red "The computer is unreachable"
 }
     
 }
+
+#Get the drive space of a device
+function Get-DriveSpace {
+    param(
+    [Parameter(Mandatory=$true)]
+    [string]$ComputerName
+)
+
+Get-WmiObject -Class Win32_Volume -ComputerName $ComputerName -Credential (Get-Credential) | 
+    Format-Table -AutoSize DriveLetter, Label, @{Label="Free(GB)"; Expression={"{0:N0}" -f ($_.FreeSpace/1GB)}}, @{Label="%Free"; Expression={"{0:P0}" -f ($_.FreeSpace/$_.Capacity)}}
+    
+}
